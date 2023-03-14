@@ -18,7 +18,7 @@ const Page = async (props: Props) => {
     } else {
         notFound();
     }
-    return <Trip trip={trip} />;
+    return <Trip trip={trip} id={props.params.id} />;
 };
 
 export default Page;

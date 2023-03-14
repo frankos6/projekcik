@@ -4,6 +4,7 @@ import {collection,getDocs} from "@firebase/firestore";
 import {database} from "@/app/firebaseConfig";
 import ITrip from "@/app/app1/ITrip";
 import Trip from "@/app/app1/Trip";
+import Link from "next/link";
 
 type Props = {
 
@@ -22,7 +23,7 @@ export default async function Page(props: Props) {
     return (
         <>
             <h3>Trips</h3>
-            <button className='btn btn-primary'>Add a trip</button>
+            <Link href='/app1/add' className='btn btn-primary'>Add a trip</Link>
             <div className='m-3 container'>
                 {trips.map(({id,trip})=>{
                     return <Trip key={id} id={id} trip={trip} />
@@ -31,3 +32,5 @@ export default async function Page(props: Props) {
         </>
     );
 };
+
+export const revalidate = 60; //revalidate cache time

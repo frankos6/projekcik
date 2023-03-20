@@ -6,6 +6,7 @@ import {addDoc, collection, Timestamp} from "@firebase/firestore";
 import {database} from "@/app/firebaseConfig";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import Item from "@/app/app1/Item";
 
 type Props = {
 
@@ -17,6 +18,7 @@ const Page = (props: Props) => {
     const [visitors, setVisitors] = useState<string[]>([]);
     const [error, setError] = useState('');
     const [isUploading ,setIsUploading] = useState(false);
+    const blankItems: Item[] = [];
     const router = useRouter();
     const addDocument = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,7 +27,8 @@ const Page = (props: Props) => {
             location,
             startDate: Timestamp.fromDate(startDate),
             endDate: Timestamp.fromDate(endDate),
-            visitors
+            visitors,
+            items: blankItems
         }).then(()=>{
             router.push('/app1');
             router.refresh();

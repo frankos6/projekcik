@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body style={{overflowX: 'hidden'}}>
         <nav className={'navbar navbar-expand-md navbar-light'}>
           <div className='container-fluid'>
               <ul className='navbar-nav me-auto mb-2 mb-lg-0 flex-row'>

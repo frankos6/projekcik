@@ -24,10 +24,12 @@ export default async function Page(props: Props) {
         <>
             <h3>Trips</h3>
             <Link href='/app1/add' className='btn btn-primary'>Add a trip</Link>
-            <div className='m-3 d-flex container-fluid flex-row justify-content-evenly'>
-                {trips.map(({id,trip})=>{
-                    return <Trip key={id} id={id} trip={trip} />
-                })}
+            <div className='m-3 container-fluid flex-col justify-content-evenly w-100'>
+                <div className='row'>
+                    {trips.map(({id,trip})=>{
+                        return <Trip key={id} id={id} trip={trip} />
+                    })}
+                </div>
             </div>
         </>
     );

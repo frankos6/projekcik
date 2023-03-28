@@ -15,7 +15,7 @@ export default function Trip(props: Props) {
         router.push(`/app1/${props.id}`)
     }
     return (
-        <div className='card p-1 col-3 col-xs-6 trip ps-2 pe-2' onClick={onClick} >
+        <div className='card p-1 col-5 col-xs-6 trip ps-2 pe-2 m-3' onClick={onClick} >
             <h5 className='card-title'>{props.trip.location}</h5>
             <h6 className='card-subtitle text-muted'>
                 {(new Date(props.trip.startDate.seconds*1000)).toLocaleDateString('pl-PL')}-{(new Date(props.trip.endDate.seconds*1000)).toLocaleDateString('pl-PL')}

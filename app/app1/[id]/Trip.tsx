@@ -34,8 +34,15 @@ const Trip = (props: Props) => {
             </div>
             <h2 style={{textAlign:'left'}}>Visitors</h2>
             <ul className='list-group col-3'>
-                {props.trip.visitors.map((e,i)=><li className='list-group-item'>{e}</li>)}
+                {props.trip.visitors.map((e,i)=><li key={i} className='list-group-item'>{e}</li>)}
             </ul>
+            <h2 style={{textAlign:'left'}}>Items</h2>
+            {props.trip.items?.map((e,i)=>{
+                return (<ul className='list-group list-group-horizontal'>
+                    <li key={i} className='list-group-item'>{e.name}</li>
+                    <li key={i} className='list-group-item'>{e.assignee == "" ? "Unassigned" : e.assignee}</li>
+                </ul>)
+            })}
         </div>
     </>);
 };

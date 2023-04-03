@@ -2,32 +2,28 @@
 
 import ITrip from "@/app/app1/ITrip";
 import Link from "next/link";
-import { useState } from "react";
-import {addDoc, collection, Timestamp} from "@firebase/firestore";
+import React, { useState } from "react";
+import {doc, Timestamp, updateDoc} from "@firebase/firestore";
 import {useRouter} from "next/navigation";
 import {database} from "@/app/firebaseConfig";
-import Item from "@/app/app1/Item";
 
 type Props = {
-    trip: ITrip
+    trip: ITrip,
+    id: string
 };
 function Form(props: Props) {
     const router = useRouter();
-    const blankItems: Item[] = [];
-    const addDocument = (e: React.FormEvent<HTMLFormElement>) => {
+    const editDocument = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsUploading(true);
-        const docRef = addDoc(collection(database,"trips"), {
+        updateDoc(doc(database,"trips",props.id), {
             location,
             startDate: Timestamp.fromDate(startDate),
             endDate: Timestamp.fromDate(endDate),
-            visitors,
-            items: blankItems
+            visitors
         }).then(()=>{
-            router.push('/app1');
+            router.push(`/app1/${props.id}`);
             router.refresh();
-        }).catch((reason)=>{
-            setError(reason.message);
         })
     }
     const visitorsModified = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,22 +44,20 @@ function Form(props: Props) {
     const [startDate, setStartDate] = useState<Date>(new Date(props.trip.startDate.seconds*1000));
     const [endDate, setEndDate] = useState<Date>(new Date(props.trip.endDate.seconds*1000));
     const [visitors, setVisitors] = useState<string[]>(props.trip.visitors);
-    const [error, setError] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     return (
         <div className='container-fluid d-flex flex-column'>
-            <Link href='/app1' className='btn btn-primary col-2 col-xl-1'>Go back</Link>
-            <form className='m-4' onSubmit={addDocument}>
-                <p className='h1'>Add a trip</p>
+            <Link href={`/app1/${props.id}`} className='btn btn-primary col-2 col-xl-1'>Go back</Link>
+            <form className='m-4' onSubmit={editDocument}>
+                <p className='h1'>Edit trip</p>
                 <div className='mb-3'>
                     <label htmlFor='location' className='form-label'>Trip location</label>
                     <input value={location} type='text' className='form-control' id='location' placeholder='Słupsk' onChange={locationModified} required />
                 </div>
                 <label className='form-label'>Start and end date</label>
                 <div className='mb-3 input-group'>
-                    {/* TODO: assign value correctly */}
-                    <input type='date' className='form-control' id='startDate' onChange={startDateModified} required />
-                    <input type='date' className='form-control' id='endDate' onChange={endDateModified} required />
+                    <input type='date' className='form-control' id='startDate' onChange={startDateModified} required value={startDate.toISOString().substring(0,10)} />
+                    <input type='date' className='form-control' id='endDate' onChange={endDateModified} required value={endDate.toISOString().substring(0,10)}/>
                 </div>
                 <div className='mb-3'>
                     <label htmlFor='visitors' className='form-label'>Visitors</label>
@@ -72,9 +66,8 @@ function Form(props: Props) {
                         Separate visitors with commas (,)
                     </div>
                 </div>
-                <label className='form-label mb-4'>You can add items later on</label>
                 <button className='btn btn-primary form-control col-4' disabled={isUploading}>
-                    {isUploading?<div className='spinner-border' style={{height:".9rem",width:".9rem",borderWidth:".2rem"}}></div>:<></>} Add trip
+                    {isUploading?<div className='spinner-border' style={{height:".9rem",width:".9rem",borderWidth:".2rem"}}></div>:<></>} Edit trip
                 </button>
             </form>
         </div>

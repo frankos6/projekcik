@@ -18,7 +18,7 @@ const Page = async (props: Props) => {
     } else {
         notFound();
     }
-    return <Form trip={trip}></Form>
+    return <Form trip={trip} id={props.params.id}></Form>
     
 };
 

@@ -5,7 +5,7 @@ import ITrip from "@/app/app1/ITrip";
 import Item from "@/app/app1/Item";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
-import {doc, deleteDoc, updateDoc, arrayUnion} from "@firebase/firestore";
+import {doc, deleteDoc, updateDoc, arrayUnion, arrayRemove} from "@firebase/firestore";
 import {database} from "@/app/firebaseConfig";
 import {useState} from "react";
 
@@ -35,6 +35,12 @@ const Trip = (props: Props) => {
             setItemAssignee("");
         })
     }
+    const deleteItem = (name:string, assignee?: string) => {
+        const deletedItem: Item = {name,assignee}
+        updateDoc(doc(database,"trips",props.id), {
+            items: arrayRemove(deletedItem)
+        }).then(()=>router.refresh());
+    }
     return (<>
         <div className='container-fluid d-flex justify-content-evenly w-100'>
             <Link className='btn btn-secondary col-3' href='/app1'>Go back</Link>
@@ -53,12 +59,26 @@ const Trip = (props: Props) => {
                 {props.trip.visitors.map((e,i)=><li key={i} className='list-group-item'>{e}</li>)}
             </ul>
             <h2 style={{textAlign:'left'}}>Items</h2>
-            {props.trip.items?.map((e,i)=>{
-                return (<ul className="list-group list-group-horizontal col-5">
-                    <li key={i} className="list-group-item flex-fill">{e.name}</li>
-                    <li key={i} className="list-group-item flex-fill">{e.assignee == "" || e.assignee == null ? "Unassigned":e.assignee}</li>
-                </ul>)
-            })}
+            <table className='table table-striped'>
+                <thead>
+                    <tr>
+                        <th scope='col'>#</th>
+                        <th scope='col'>Name</th>
+                        <th scope='col'>Assignee</th>
+                        <th scope='col'>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {props.trip.items?.map((e,i)=>{
+                    return (<tr key={i}>
+                        <th scope='row'>{i}</th>
+                        <th>{e.name}</th>
+                        <th>{e.assignee == "" || !e.assignee ? "Unassigned":e.name}</th>
+                        <th><button className='btn btn-danger' onClick={()=>deleteItem(e.name,e.assignee)}>Delete</button></th>
+                    </tr>)
+                })}
+                </tbody>
+            </table>
             <button className='btn btn-primary col-4 mb-2 mt-4' onClick={()=>setAddingItem(!addingItem)}>Add an item</button>
             <form className={`container d-flex flex-row ${!addingItem?"visually-hidden":""}`} onSubmit={addItem}>
                 <div className='row input-group'>

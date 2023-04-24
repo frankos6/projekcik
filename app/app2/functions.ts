@@ -3,7 +3,7 @@ import {database} from "@/app/firebaseConfig";
 import ITask from "@/app/app2/ITask";
 
 export async function getTask(id:string): Promise<ITask | null> {
-    const docSnap = await getDoc(doc(database, "trips",id));
+    const docSnap = await getDoc(doc(database, "tasks",id));
     if (docSnap.exists()){
         return docSnap.data() as ITask
     } else return null;

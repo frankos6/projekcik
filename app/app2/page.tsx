@@ -3,6 +3,8 @@ import * as React from 'react';
 import {collection,getDocs} from "@firebase/firestore";
 import {database} from "@/app/firebaseConfig";
 import ITask from "@/app/app2/ITask";
+import {Task} from "@/app/app2/Task";
+import './style.css';
 
 type Props = {
 
@@ -22,7 +24,7 @@ const Page = async (props: Props) => {
         <div>
             <h3>Tasks</h3>
             {/*@ts-ignore*/}
-            {tasks.map((e,i)=><div key={i}>{e.task.desc}{e.task.startDate.toDate().toLocaleDateString()}{e.task.completed?"xd":"xddd"}</div>)}
+            {tasks.map((e,i)=><Task key={i} id={e.id} task={e.task} />)}
         </div>
     );
 };

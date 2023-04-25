@@ -23,6 +23,7 @@ const Page = async (props: Props) => {
     return (
         <div>
             <h3>Tasks</h3>
+            <button onClick={}>Add a task</button>
             {/*@ts-ignore*/}
             {tasks.map((e,i)=><Task key={i} id={e.id} task={e.task} />)}
         </div>

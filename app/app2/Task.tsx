@@ -16,7 +16,7 @@ export const Task = (props: Props) => {
     return (
         <div className="card col-4 task" onClick={onClick}>
             <h5 className="card-title">{props.task.desc}</h5>
-
+            <div className="card-subtitle text-muted">{new Date(props.task.startDate.seconds*1000).toLocaleDateString("pl-PL")}{!props.task.endDate ? "" : `-${new Date(props.task.endDate.seconds * 1000).toLocaleDateString("pl-PL")}`}</div>
         </div>
     );
 };

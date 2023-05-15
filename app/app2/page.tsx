@@ -3,8 +3,8 @@ import * as React from 'react';
 import {collection,getDocs} from "@firebase/firestore";
 import {database} from "@/app/firebaseConfig";
 import ITask from "@/app/app2/ITask";
-import {Task} from "@/app/app2/Task";
 import './style.css';
+import Tasks from "@/app/app2/Tasks";
 
 type Props = {
 
@@ -21,12 +21,7 @@ const Page = async (props: Props) => {
     })
 
     return (
-        <div>
-            <h3>Tasks</h3>
-            <button onClick={}>Add a task</button>
-            {/*@ts-ignore*/}
-            {tasks.map((e,i)=><Task key={i} id={e.id} task={e.task} />)}
-        </div>
+        <Tasks tasks={tasks} />
     );
 };
 

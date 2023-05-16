@@ -1,0 +1,13 @@
+GET https://api.openweathermap.org/geo/1.0/direct?q=Słupsk,PL&limit=5&appid=bed799e35e479eb9806eb8c2a2fe0f60
+###
+###
+
+
+GET https://api.openweathermap.org/data/2.5/weather?lat=54.460570849999996&lon=17.027730037017736&units=metric&appid=bed799e35e479eb9806eb8c2a2fe0f60
+Accept: application/json
+
+> {%
+    client.log(response.body.main.temp)
+%}
+###
+

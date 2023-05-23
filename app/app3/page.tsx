@@ -5,14 +5,17 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
+import {useRouter} from "next/navigation";
 
 type Props = {
 
 };
 const Page = (props: Props) => {
+    const router = useRouter();
     const [search, setSearch] = React.useState('');
     const handleClick = () => {
-
+        if (search === "") return;
+        router.push(`/app3/search?q=${search}`);
     }
     return (
         <Stack spacing={2} direction="row" justifyContent="center">

@@ -9,6 +9,9 @@ type Props = {
 };
 const Page = (props: Props) => {
     const router = useRouter();
+    const regionNames = new Intl.DisplayNames(
+        ['en'], {type: 'region'}
+    );
     const searchParams = useSearchParams();
     const q = searchParams.get('q');
     const [data,setData] = useState<Geo[]>([]);
@@ -33,7 +36,7 @@ const Page = (props: Props) => {
     return (
         <div>
             {data.map((e,i)=>(
-                <div onClick={()=>router.push(`/app3/weather?lon=${e.lon}&lat=${e.lat}`)} key={i}>{e.name}, {e.country}</div>
+                <div onClick={()=>router.push(`/app3/weather?lon=${e.lon}&lat=${e.lat}`)} key={i}>{e.name}, {regionNames.of(e.country)}</div>
             ))}
         </div>
     );

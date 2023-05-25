@@ -38,6 +38,11 @@ export interface Weather {
         "3h": number
     }
 }
+export interface City {
+    name: string,
+    lon: number,
+    lat: number
+}
 
 export async function findCity(query:string) {
     console.log(process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY);
@@ -62,4 +67,11 @@ export async function getWeather(lon:number,lat:number) {
         let body: { cod?:string,message?:string } = await res.json();
         throw new Error(body.message??"An error occurred.");
     }
+}
+
+export function addFavorite(name:string, lon: number, lat: number){
+    const favorites: City[] = JSON.parse(localStorage.getItem("weatherfav")||"[]");
+    if (favorites.findIndex((x => x.lon === lon && x.lat === lat)) !== -1) return; //don't add the same city twice
+    favorites.push({name,lon,lat} as City)
+    localStorage.setItem("weatherfav",JSON.stringify(favorites))
 }

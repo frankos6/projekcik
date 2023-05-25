@@ -16,16 +16,18 @@ const Page = (props: Props) => {
     const q = searchParams.get('q');
     const [data,setData] = useState<Geo[]>([]);
     const [isLoading, setLoading] = useState(false);
-    if (!q) return <h2>Invalid query</h2>;
 
     useEffect(()=>{
         setLoading(true)
-        findCity(q)
+        findCity(q??"")
             .then(d=> {
                 setData(d);
                 setLoading(false);
             })
     },[])
+
+    if (!q) return <h2>Invalid query</h2>;
+
 
     if (isLoading) return <div className='container-fluid w-100 d-flex flex-column align-items-center justify-content-center h-100'>
         <div className='spinner-border mt-5' style={{height: '6rem', width: '6rem', borderWidth: '.4rem'}} role='status'>
@@ -36,7 +38,7 @@ const Page = (props: Props) => {
     return (
         <div>
             {data.map((e,i)=>(
-                <div onClick={()=>router.push(`/app3/weather?lon=${e.lon}&lat=${e.lat}`)} key={i}>{e.name}, {regionNames.of(e.country)}</div>
+                <div onClick={()=>router.push(`/app3/weather?lon=${e.lon.toFixed(4)}&lat=${e.lat.toFixed(4)}`)} key={i}>{e.name}, {regionNames.of(e.country)}</div>
             ))}
         </div>
     );

@@ -16,7 +16,6 @@ const Search = (props: Props) => {
     const handleClick = () => {
         if (search === "") return;
         router.push(`/app3/weather?q=${search}`);
-        router.refresh();
     }
     return (
         <Stack spacing={2} direction="row" justifyContent="center">

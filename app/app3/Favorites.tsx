@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {City} from "@/lib/openweather";
 import Stack from "@mui/material/Stack";
+import {Favorite} from "@/app/app3/Favorite";
 
 type Props = {
 
@@ -10,9 +11,9 @@ type Props = {
 const Favorites = (props: Props) => {
     const favorites: City[] = JSON.parse(localStorage.getItem("weatherfav")||"[]");
     return (
-        <Stack justifyContent={'center'}>
+        <Stack justifyContent='center' spacing={1.5}>
             {favorites.map((v,i)=>(
-                <div key={i}>{v.name}</div>
+                <Favorite key={i} city={v}/>
             ))}
         </Stack>
     );

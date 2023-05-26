@@ -14,8 +14,7 @@ const Layout = ({children}: Props) => {
     return (
         <Grid container spacing={2} height={"100%"} >
             <Grid lg={3} md={4} >
-                Favorites
-                <Button onClick={()=>{addFavorite("lol",12,23)}}>XDD</Button>
+                <h3>Favorites</h3>
                 <Favorites />
             </Grid>
             <Grid container lg={9} md={8}>

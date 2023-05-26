@@ -1,0 +1,11 @@
+.star {
+    color: yellow;
+}
+
+.star:hover {
+    cursor: pointer;
+}
+
+.fav:hover {
+    cursor: pointer;
+}

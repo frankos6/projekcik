@@ -45,7 +45,6 @@ export interface City {
 }
 
 export async function findCity(query:string) {
-    console.log(process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY);
     const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`);
     if (res.ok) {
         let body: Geo[] = await res.json();
@@ -70,8 +69,19 @@ export async function getWeather(lon:number,lat:number) {
 }
 
 export function addFavorite(name:string, lon: number, lat: number){
-    const favorites: City[] = JSON.parse(localStorage.getItem("weatherfav")||"[]");
+    const favorites = getFavorites();
     if (favorites.findIndex((x => x.lon === lon && x.lat === lat)) !== -1) return; //don't add the same city twice
     favorites.push({name,lon,lat} as City)
     localStorage.setItem("weatherfav",JSON.stringify(favorites))
+}
+
+export function getFavorites(): City[] {
+    return JSON.parse(localStorage.getItem("weatherfav")||"[]") as City[];
+}
+
+export function removeFavorite(name: string, lon: number, lat: number) {
+    const favorites = getFavorites();
+    let index = favorites.findIndex((x => x.lon === lon && x.lat === lat))
+    console.log(index)
+    if (index > -1) favorites.splice(index,1);localStorage.setItem("weatherfav",JSON.stringify(favorites))
 }

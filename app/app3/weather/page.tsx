@@ -3,9 +3,11 @@
 import * as React from 'react';
 import {notFound, useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
-import {findCity, Geo, getWeather, Weather} from "@/lib/openweather";
+import {addFavorite, findCity, Geo, getFavorites, getWeather, removeFavorite, Weather} from "@/lib/openweather";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
-
+import Star from "@mui/icons-material/Star";
+import StarBorder from "@mui/icons-material/StarBorder";
+import './style.css';
 type Props = {
 
 };
@@ -19,6 +21,9 @@ const Page = (props: Props) => {
     const [data,setData] = useState<Weather>();
     const [city,setCity] = useState<Geo>();
     const [isLoading, setLoading] = useState(false);
+
+    const addFav = () => {addFavorite(city?.name!,city?.lon!,city?.lat!);router.refresh()}
+    const removeFav = () => {removeFavorite(city?.name!,city?.lon!,city?.lat!);router.refresh()}
     if (!q) notFound();
 
     useEffect(()=>{
@@ -40,7 +45,8 @@ const Page = (props: Props) => {
 
     return (
         <div>
-            <h2>{city?.name}, {city?.state ? `${city.state},` : ''} {city?.country ? regionNames.of(city.country) : ""}</h2>
+            <h2>{city?.name}, {city?.state ? `${city.state},` : ''} {city?.country ? regionNames.of(city.country) : ""}
+                {getFavorites().findIndex((x => x.lon === city?.lon && x.lat === city?.lat)) > -1 ? <Star onClick={removeFav} className={'star'} /> : <StarBorder onClick={addFav} className={'star'} />}</h2>
             {data?.weather[0].main} <br/>
             {data?.main.temp} C <br />
             {data?.wind.speed} km/h

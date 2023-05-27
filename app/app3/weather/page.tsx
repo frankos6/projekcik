@@ -8,10 +8,12 @@ import ArrowUpward from "@mui/icons-material/ArrowUpward";
 import Star from "@mui/icons-material/Star";
 import StarBorder from "@mui/icons-material/StarBorder";
 import './style.css';
-type Props = {
+import Stack from "@mui/material/Stack";
+import Grid from '@mui/material/Grid';
+import {Forecasts} from "@/app/app3/Forecasts";
+import Image from "next/image";
 
-};
-const Page = (props: Props) => {
+const Page = () => {
     const router = useRouter();
     const regionNames = new Intl.DisplayNames(
         ['en'], {type: 'region'}
@@ -46,11 +48,23 @@ const Page = (props: Props) => {
     return (
         <div>
             <h2>{city?.name}, {city?.state ? `${city.state},` : ''} {city?.country ? regionNames.of(city.country) : ""}
-                {getFavorites().findIndex((x => x.lon === city?.lon && x.lat === city?.lat)) > -1 ? <Star onClick={removeFav} className={'star'} /> : <StarBorder onClick={addFav} className={'star'} />}</h2>
-            {data?.weather[0].main} <br/>
-            {data?.main.temp} C <br />
-            {data?.wind.speed} km/h
-            <ArrowUpward style={{transform: `rotate(${data?.wind.deg??0}deg)`}} />
+                {getFavorites().findIndex((x => x.lon === city?.lon && x.lat === city?.lat)) > -1 ? <Star onClick={removeFav} className={'star'} fontSize='large' /> : <StarBorder onClick={addFav} className={'star'} fontSize='large' />}</h2>
+            <Grid container>
+                <Grid item xs={9}>
+                    <Stack alignItems='center'>
+                        <Image alt={data?.weather[0].description ?? 'weather icon'} src={`https://openweathermap.org/img/wn/${data?.weather[0].icon ?? '02d'}@4x.png`} height={250} width={250} />
+                        <h3>{data?.weather[0].main}</h3>
+                        <h2>{data?.main.temp.toFixed()} °C</h2>
+                        <Stack direction='row'>
+                            <h3>{data?.wind.speed} km/h</h3>
+                            <ArrowUpward style={{transform: `rotate(${data?.wind.deg??0}deg)`}} fontSize='large' />
+                        </Stack>
+                    </Stack>
+                </Grid>
+                <Grid item xs={3}>
+                    <Forecasts city={city??{name:'temp',lon:0,lat:0}} />
+                </Grid>
+            </Grid>
         </div>
     );
 };

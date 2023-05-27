@@ -1,13 +1,10 @@
 // @flow
 import * as React from 'react';
 
-type Props = {
-
-};
-const Page = (props: Props) => {
+const Page = () => {
     return (
         <div>
-            xd
+
         </div>
     );
 };

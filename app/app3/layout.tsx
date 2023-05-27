@@ -4,12 +4,10 @@ import * as React from 'react';
 import Grid from "@mui/material/Unstable_Grid2";
 import Search from "@/app/app3/Search";
 import Favorites from "@/app/app3/Favorites";
-import Button from "@mui/material/Button";
-import {addFavorite} from "@/lib/openweather";
-
 type Props = {
     children: React.ReactNode
 };
+
 const Layout = ({children}: Props) => {
     return (
         <Grid container spacing={2} height={"100%"} >

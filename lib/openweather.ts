@@ -38,10 +38,16 @@ export interface Weather {
         "3h": number
     }
 }
+
 export interface City {
     name: string,
     lon: number,
     lat: number
+}
+
+export interface Forecast extends Weather {
+    dt: number,
+    dt_txt: string
 }
 
 export async function findCity(query:string) {
@@ -82,6 +88,16 @@ export function getFavorites(): City[] {
 export function removeFavorite(name: string, lon: number, lat: number) {
     const favorites = getFavorites();
     let index = favorites.findIndex((x => x.lon === lon && x.lat === lat))
-    console.log(index)
     if (index > -1) favorites.splice(index,1);localStorage.setItem("weatherfav",JSON.stringify(favorites))
+}
+
+export async function getForecast(lon: number, lat: number){
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}05&lon=${lon}&units=metric&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`)
+    if (res.ok) {
+        const obj = await res.json();
+        return obj.list.filter((x: Forecast)=>x.dt_txt.substring(11,13)==='15') as Forecast[]; // only forecasts for 15:00
+    } else {
+        let body: { cod?:string,message?:string } = await res.json();
+        throw new Error(body.message??"An error occurred.");
+    }
 }

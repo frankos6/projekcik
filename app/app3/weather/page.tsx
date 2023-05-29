@@ -32,6 +32,7 @@ const Page = () => {
         setLoading(true);
         findCity(q??"")
             .then(d=> {
+                if (d.length === 0) {router.push('/app3/error');return;}
                 setCity(d[0]);
                 return getWeather(d[0].lon, d[0].lat)
             })

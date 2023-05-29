@@ -8,6 +8,9 @@ import alpha from 'alphavantage';
 import Button from "@mui/material/Button";
 import {getFavorites, removeFavorite, addFavorite} from "@/lib/stockfav";
 import {useRouter} from "next/navigation";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Grid from "@mui/material/Grid";
 
 const APIKEY = 'IKM79Y7G3DJIK4BQ';
 const MINUTES = '15';
@@ -19,9 +22,11 @@ type Data = [number,number,number,number,number];
 type Volume = [number,number];
 const Page = ({params}: Props) => {
     const router = useRouter();
+    const chartTypes = ['Candlestick','OHLC','Line','Area','Column'] as const;
     const API = alpha({key: APIKEY})
     const [data, setData] = React.useState<Data[]>([]);
     const [volume, setVolume] = React.useState<Volume[]>([]);
+    const [type, setType] = React.useState<typeof chartTypes[number]>('Candlestick');
 
     useEffect(()=>{
         API.data.intraday(params.name,'compact','json','15min')
@@ -55,9 +60,18 @@ const Page = ({params}: Props) => {
 
     return (
         <div>
-            {getFavorites().includes(params.name)
-                ? <Button onClick={()=>{removeFavorite(params.name);router.refresh();}}>Remove {params.name} from favorites</Button>
-                : <Button onClick={()=>{addFavorite(params.name);router.refresh()}}>Add {params.name} to favorites</Button>}
+            <Grid container>
+                <Grid xs={4} item>{getFavorites().includes(params.name)
+                    ? <Button onClick={()=>{removeFavorite(params.name);router.refresh();}}>Remove {params.name} from favorites</Button>
+                    : <Button onClick={()=>{addFavorite(params.name);router.refresh()}}>Add {params.name} to favorites</Button>}</Grid>
+                <Grid xs={4} item></Grid>
+                <Grid xs={4} item>
+                    <Autocomplete value={type} onChange={(e,v)=>setType(v??'Candlestick')}
+                                  options={chartTypes} renderInput={(params) => <TextField {...params} label="Chart type" />} disableClearable />
+                </Grid>
+
+            </Grid>
+
 
             <HighchartsReact
                 highcharts={Highcharts}
@@ -96,7 +110,7 @@ const Page = ({params}: Props) => {
                     }],
 
                     series: [{
-                        type: 'candlestick',
+                        type: type.toLowerCase(),
                         id: params.name,
                         name: params.name,
                         data: data

@@ -22,7 +22,7 @@ export const Favorite = ({city}: Props) => {
     },[])
 
     return (
-        <Box onClick={()=>router.push(`/app3/weather?q=${city.name}`)} className='fav'>
+        <Box onClick={()=>{router.push(`/app3/weather?q=${city.name}`);router.refresh();}} className='fav'>
             <Stack direction="row" justifyContent="space-between" borderRadius="1rem" border="solid" height="4rem" alignItems='center' padding='1rem'>
                 <h4>{city.name}</h4>
                 <Stack direction="row" alignItems='center'>

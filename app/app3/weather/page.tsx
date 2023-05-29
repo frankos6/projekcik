@@ -22,10 +22,11 @@ const Page = () => {
     const q = searchParams.get('q');
     const [data,setData] = useState<Weather>();
     const [city,setCity] = useState<Geo>();
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading,setLoading] = useState(false);
+    const [isFavorite,setFavorite] = useState(false);
 
-    const addFav = () => {addFavorite(city?.name!,city?.lon!,city?.lat!);router.refresh()}
-    const removeFav = () => {removeFavorite(city?.name!,city?.lon!,city?.lat!);router.refresh()}
+    const addFav = () => {addFavorite(city?.name!,city?.lon!,city?.lat!);setFavorite(true)}
+    const removeFav = () => {removeFavorite(city?.name!,city?.lon!,city?.lat!);setFavorite(false)}
     if (!q) notFound();
 
     useEffect(()=>{
@@ -37,7 +38,7 @@ const Page = () => {
                 return getWeather(d[0].lon, d[0].lat)
             })
             .then(d=>setData(d))
-            .then(()=>setLoading(false))
+            .then(()=>{setLoading(false);setFavorite(getFavorites().findIndex((x => x.lon === city?.lon && x.lat === city?.lat)) > -1)})
     },[])
 
     if (isLoading) return <div className='container-fluid w-100 d-flex flex-column align-items-center justify-content-center h-100'>
@@ -49,7 +50,7 @@ const Page = () => {
     return (
         <div>
             <h2>{city?.name}, {city?.state ? `${city.state},` : ''} {city?.country ? regionNames.of(city.country) : ""}
-                {getFavorites().findIndex((x => x.lon === city?.lon && x.lat === city?.lat)) > -1 ? <Star onClick={removeFav} className={'star'} fontSize='large' /> : <StarBorder onClick={addFav} className={'star'} fontSize='large' />}</h2>
+                {isFavorite ? <Star onClick={removeFav} className={'star'} fontSize='large' /> : <StarBorder onClick={addFav} className={'star'} fontSize='large' />}</h2>
             <Grid container>
                 <Grid item xs={9}>
                     <Stack alignItems='center'>

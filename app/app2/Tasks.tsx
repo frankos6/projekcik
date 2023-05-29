@@ -6,6 +6,7 @@ import {Task} from "@/app/app2/Task";
 import NewModal from "@/app/app2/(modal)/new";
 import {Button} from "react-bootstrap";
 import {useState} from "react";
+import Grid from "@mui/material/Grid";
 
 type Props = {
     tasks: {id:string,task:ITask}[]
@@ -19,8 +20,9 @@ const Tasks = (props: Props) => {
         <div>
             <h3>Tasks</h3>
             <Button variant="primary" onClick={onClick}>Add a task</Button>
-            {/*@ts-ignore*/}
-            {props.tasks.map((e,i)=><Task key={i} id={e.id} task={e.task} />)}
+            <Grid container>
+                {props.tasks.map((e,i)=><Grid item xs={4}><Task key={i} id={e.id} task={e.task} /></Grid>)}
+            </Grid>
             <NewModal setShow={setShow} show={show} />
         </div>
     );

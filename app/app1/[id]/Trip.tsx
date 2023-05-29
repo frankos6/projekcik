@@ -69,14 +69,14 @@ const Trip = (props: Props) => {
                     </tr>
                 </thead>
                 <tbody>
-                {props.trip.items?.map((e,i)=>{
+                {props.trip.items?.length ?? 0 > 0 ? props.trip.items?.map((e, i)=>{
                     return (<tr key={i}>
                         <th scope='row'>{i}</th>
                         <th>{e.name}</th>
-                        <th>{e.assignee == "" || !e.assignee ? "Unassigned":e.name}</th>
+                        <th>{e.assignee == "" || !e.assignee ? "Unassigned":e.assignee}</th>
                         <th><button className='btn btn-danger' onClick={()=>deleteItem(e.name,e.assignee)}>Delete</button></th>
                     </tr>)
-                })}
+                }): <></>}
                 </tbody>
             </table>
             <button className='btn btn-primary col-4 mb-2 mt-4' onClick={()=>setAddingItem(!addingItem)}>Add an item</button>

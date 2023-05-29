@@ -11,6 +11,7 @@ const Favorites = () => {
     useEffect(()=>
             setFavorites(JSON.parse(localStorage.getItem("weatherfav") || "[]"))
     ,[])
+    window.addEventListener('mousemove',()=>setFavorites(JSON.parse(localStorage.getItem("weatherfav") || "[]")))
     return (
         <Stack justifyContent='center' spacing={1.5}>
             {favorites.map((v,i)=>(

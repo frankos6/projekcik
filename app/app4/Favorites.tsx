@@ -12,6 +12,7 @@ export const Favorites = () => {
     useEffect(()=>
             setFavorites(JSON.parse(localStorage.getItem("stockfav") || "[]"))
         ,[])
+    window.addEventListener('mousemove',()=>setFavorites(JSON.parse(localStorage.getItem("stockfav") || "[]")))
     return (
         <div>
             <Stack justifyContent='center' spacing={0}>

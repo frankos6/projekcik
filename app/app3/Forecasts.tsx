@@ -7,9 +7,10 @@ import Stack from "@mui/material/Stack";
 import {Forecas} from "@/app/app3/Forecas";
 
 type Props = {
-    city: City
+    city: City,
+    useF: boolean
 };
-export const Forecasts = ({city}: Props) => {
+export const Forecasts = ({city, useF}: Props) => {
     const [forecasts, setForecasts] = useState<Forecast[]>([]);
     useEffect(()=>{
         getForecast(city.lon,city.lat)
@@ -17,7 +18,7 @@ export const Forecasts = ({city}: Props) => {
     },[])
     return (
         <Stack spacing={2}>
-            {forecasts.map((e,i)=><Forecas key={i} forecast={e} />)}
+            {forecasts.map((e,i)=><Forecas key={i} forecast={e} useF={useF}/>)}
         </Stack>
     );
 };

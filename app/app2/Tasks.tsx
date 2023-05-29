@@ -21,7 +21,7 @@ const Tasks = (props: Props) => {
             <h3>Tasks</h3>
             <Button variant="primary" onClick={onClick}>Add a task</Button>
             <Grid container>
-                {props.tasks.map((e,i)=><Grid item xs={4}><Task key={i} id={e.id} task={e.task} /></Grid>)}
+                {props.tasks.map((e,i)=><Grid key={i} item xs={4}><Task id={e.id} task={e.task} /></Grid>)}
             </Grid>
             <NewModal setShow={setShow} show={show} />
         </div>

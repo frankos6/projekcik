@@ -18,6 +18,7 @@ const DeleteModal = (props: Props) => {
         deleteDoc(doc(database,"tasks",props.id))
             .then(()=>{
                 router.push('/app2/');
+                router.refresh();
                 props.setShow(false);
             })
     }

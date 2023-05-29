@@ -8,6 +8,7 @@ import Image from "next/image";
 
 type Props = {
     forecast: Forecast
+    useF: boolean
 };
 export const Forecas = ({forecast}: Props) => {
     return (

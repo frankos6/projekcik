@@ -60,7 +60,6 @@ const Page = () => {
                         <Image alt={data?.weather[0].description ?? 'weather icon'} src={`https://openweathermap.org/img/wn/${data?.weather[0].icon ?? '02d'}@4x.png`} height={250} width={250} />
                         <h3>{data?.weather[0].main}</h3>
                         <h2>{useF ? ((data?.main.temp ?? 0) * 9/5 + 32).toFixed() : data?.main.temp.toFixed()} °{useF ? 'F' : 'C'}</h2>
-                        <FormControlLabel control={<Switch checked={useF} onChange={(event, checked)=>setUseF(checked)} />} label="Use Fahrenheit" />
                         <Stack direction='row'>
                             <h3>{data?.wind.speed} km/h</h3>
                             <ArrowUpward style={{transform: `rotate(${data?.wind.deg??0}deg)`}} fontSize='large' />
@@ -68,6 +67,7 @@ const Page = () => {
                     </Stack>
                 </Grid>
                 <Grid item xs={3}>
+                    <FormControlLabel control={<Switch checked={useF} onChange={(event, checked)=>setUseF(checked)} />} label="Use Fahrenheit" />
                     <Forecasts city={city??{name:'temp',lon:0,lat:0}} useF={useF}/>
                 </Grid>
             </Grid>
